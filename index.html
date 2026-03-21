@@ -11,6 +11,7 @@
             color: #333;
             margin: 0;
             padding: 0;
+            overflow-x: hidden;
         }
         header {
             background-color: #333;
@@ -61,7 +62,7 @@
 
 <main>
 
-    <!-- BAYER I HÅNDEN -->
+    <!-- SANG 1 -->
     <div class="lyrics">
         <h2>Bayer i hånden</h2>
 
@@ -120,7 +121,7 @@
         <div class="refrain">Refr.</div>
     </div>
 
-    <!-- LAMBO -->
+    <!-- SANG 2 -->
     <div class="lyrics">
         <h2>Lambo</h2>
 
@@ -153,7 +154,7 @@
         </div>
     </div>
 
-    <!-- DET ER MEG DET SAMME HVOR JEG HAVNER NÅR JEG DØR -->
+    <!-- SANG 3 -->
     <div class="lyrics">
         <h2>Det er meg det samme hvor jeg havner når jeg dør</h2>
 
@@ -201,6 +202,50 @@
     </div>
 
 </main>
+
+<script>
+    const songs = Array.from(document.querySelectorAll('.lyrics'));
+    let current = 0;
+
+    function showSong(index) {
+        songs.forEach((song, i) => {
+            song.style.display = i === index ? 'block' : 'none';
+        });
+    }
+
+    showSong(current);
+
+    function nextSong() {
+        current = (current + 1) % songs.length;
+        showSong(current);
+    }
+
+    function prevSong() {
+        current = (current - 1 + songs.length) % songs.length;
+        showSong(current);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') nextSong();
+        if (e.key === 'ArrowLeft') prevSong();
+    });
+
+    let startX = 0;
+
+    document.addEventListener('touchstart', (e) => {
+        startX = e.changedTouches[0].screenX;
+    });
+
+    document.addEventListener('touchend', (e) => {
+        let endX = e.changedTouches[0].screenX;
+        let diff = endX - startX;
+
+        if (Math.abs(diff) > 50) {
+            if (diff < 0) nextSong();
+            else prevSong();
+        }
+    });
+</script>
 
 </body>
 </html>
